@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "RabbitHole.CLI": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
