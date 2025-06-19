@@ -60,7 +60,7 @@ namespace RabbitHole.Client
             }
         }
 
-            private async void SessionReadWorker()
+        private async void SessionReadWorker()
         {
             var buffer = ArrayPool<byte>.Shared.Rent(1024 * 64);
             try
@@ -101,6 +101,10 @@ namespace RabbitHole.Client
             {
                 _logger.LogError(ex, $"Session worker failed for {Hostname} on port {Port}");
                 HandleDisconnect(true);
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
             }
         }
         public async Task TryWriteAsync(byte[] data, int offset, long size)

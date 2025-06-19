@@ -69,6 +69,8 @@ namespace RabbitHole.Client
 
         private async Task RunWebSocketAsync(WebSocket webSocket)
         {
+            var okMessage = Encoding.UTF8.GetBytes("OK");
+            
             try
             {
                 var buffer = new byte[1024 * 64];
@@ -81,6 +83,9 @@ namespace RabbitHole.Client
                         _logger.LogInformation("WebSocket connection closed.");
                         break;
                     }
+                    
+                    using var timeoutCts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                    await webSocket.SendAsync(okMessage, WebSocketMessageType.Text, true, timeoutCts.Token);
 
                     // Convert received data to a string and print
                     var message = Encoding.UTF8.GetString(buffer, 0, result.Count);
